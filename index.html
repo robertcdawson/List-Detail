@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html ng-app="TeamMembers">
+<head>
+	<title>Team</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="css/app.css">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	
+	<div>
+
+		<!-- Placeholder for views -->
+		<div ng-view=""></div>
+
+	</div>
+	
+	<!-- Required AngularJS files -->
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="lib/angular/angular-route.min.js"></script>
+	<script src="lib/angular/angular-animate.min.js"></script>
+
+	<!-- Required Bootstrap files -->
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+	<script>
+
+		// Define module
+		
+		var TeamMembers = angular.module('TeamMembers', ['ngRoute', 'ngAnimate']);
+
+		// Configure module
+
+		TeamMembers.config(function ($routeProvider) {
+
+			$routeProvider
+				.when('/list', 
+				{
+					controller:		'ListController',
+					templateUrl:	'partials/ListTemplate.html'
+				})
+				.when('/detail/:lastName', 
+				{
+					controller:		'DetailController',
+					templateUrl:	'partials/DetailTemplate.html'
+				})
+				.when('/add', 
+				{
+					controller:		'AddController',
+					templateUrl:	'partials/AddTemplate.html'
+				})
+				.otherwise({ redirectTo: '/list' });
+
+		});
+
+		// Set up factory
+
+		TeamMembers.factory('AppService', function () {
+
+			// To publish: Create empty array to contain new team members
+			// var members = [];
+
+			// To test: Create example data to show how app works
+			var members = [
+				{
+					first_name:	'Jane', 
+					last_name:	'Doe', 
+					job_title:	'Manager',
+					job_type:	'manager',
+					photo:		'yoda.png',
+					work_phone:	'999-999-9999',
+					work_email:	'manager@company.com'
+				}, 
+				{
+					first_name:	'John', 
+					last_name:	'Doe', 
+					job_title:	'Developer',
+					job_type:	'staff',
+					photo:		'yoda.png',
+					work_phone:	'999-999-9999',
+					work_email:	'developer@company.com'
+				},
+				{
+					first_name:	'Jim', 
+					last_name:	'Doe', 
+					job_title:	'Designer',
+					job_type:	'staff',
+					photo:		'yoda.png',
+					work_phone:	'999-999-9999',
+					work_email:	'designer@company.com'
+				}
+			];
+
+			var factory = {};
+
+			factory.getMembers = function() {
+
+				return members;
+
+			};
+
+			factory.getMember = function (members, lastName) {
+
+				memberInfo = [];
+
+				for (var i = 0; i < members.length; i++)
+				{
+					if ( members[i]["last_name"].toLowerCase() === lastName )
+					{
+						memberInfo.first_name	= members[i]["first_name"];
+						memberInfo.last_name	= members[i]["last_name"];
+						memberInfo.job_title	= members[i]["job_title"];
+						memberInfo.job_type		= members[i]["job_type"];
+						memberInfo.photo		= members[i]["photo"];
+						memberInfo.work_phone	= members[i]["work_phone"];
+						memberInfo.work_email	= members[i]["work_email"];
+					}
+				}
+
+				return memberInfo;
+			};
+
+			return factory;
+
+		});
+
+		// Define controllers
+
+		var controllers = {};
+
+		controllers.ListController = function ($scope, AppService) {
+
+			$scope.members = AppService.getMembers();
+
+		};
+
+		controllers.AddController = function ($scope, AppService) {
+
+			$scope.members = AppService.getMembers();
+
+			$scope.addMember = function () {
+				$scope.members.push(
+					{ 
+						first_name:	$scope.newMember.first_name, 
+						last_name: 	$scope.newMember.last_name, 
+						job_title: 	$scope.newMember.job_title,
+						job_type: 	$scope.newMember.job_type,
+						photo: 		'yoda.png',
+						work_phone:	$scope.newMember.work_phone,
+						work_email:	$scope.newMember.work_email
+					}
+				);
+			};
+
+		};
+
+		controllers.DetailController = function ($scope, $routeParams, AppService) {
+
+			$scope.members = AppService.getMembers();
+			$scope.member = AppService.getMember( $scope.members, $routeParams.lastName );
+
+			$scope.member.first_name	= $scope.member["first_name"];
+			$scope.member.last_name		= $scope.member["last_name"];
+			$scope.member.full_name		= $scope.member.first_name + " " + $scope.member.last_name;
+			$scope.member.job_title		= $scope.member["job_title"];
+			$scope.member.job_type		= $scope.member["job_type"];
+			$scope.member.work_phone	= $scope.member["work_phone"];
+			$scope.member.photo			= $scope.member["photo"];
+			$scope.member.work_email	= $scope.member["work_email"];
+
+		};
+
+		TeamMembers.controller(controllers);
+
+	</script>
+</body>
+</html>

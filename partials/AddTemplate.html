@@ -1,0 +1,86 @@
+<div id="wrap">
+
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+		<div class="container">
+		  <div class="navbar-header">
+		    <a class="navbar-brand" href="#/list">The Team</a>
+		  </div>
+
+		  <div class="navbar-collapse collapse">
+		    <ul class="nav navbar-nav">
+		      <li><a href="#/list">Home</a></li>
+		      <li class="active"><a href="#/add">Add</a></li>
+		    </ul>
+		  </div>
+		</div>
+
+	</div>
+
+	<div class="container">
+
+		<header class="header row">
+
+			<div class="col-xs-12">
+
+				<h1>Add a Teammate</h1>
+
+			</div>
+		
+		</header>
+
+		<hr>
+		
+		<article class="row">
+
+			<div class="col-xs-12 col-md-6 jumbotron">
+
+				<form class="form-group">
+
+					<h4>Add Members</h4>
+					
+					<input type="text" class="form-control" placeholder="First Name" required="" ng-model="newMember.first_name">
+
+					<input type="text" class="form-control" placeholder="Last Name" required="" ng-model="newMember.last_name">
+
+					<input type="text" class="form-control" placeholder="Job Title" required="" ng-model="newMember.job_title">
+
+					<input type="tel" class="form-control" placeholder="Work Phone" required="" ng-model="newMember.work_phone">
+
+					<input type="email" class="form-control" placeholder="Work Email" required="" ng-model="newMember.work_email">
+
+					<div class="input-group">
+
+						<label class="radio-inline">
+							<input type="radio" id="job_type_manager" value="manager" ng-model="newMember.job_type"> Manager
+						</label>
+						
+						<label class="radio-inline">
+							<input type="radio" id="job_type_staff" value="staff" ng-model="newMember.job_type"> Staff
+						</label>
+
+					</div>
+					
+					<button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="addMember()">Add Team Member</button>
+
+				</form>
+
+			</div>
+		
+		</article>
+
+	</div>
+
+</div>
+
+<div id="footer">
+
+	<div class="container">
+
+		<br>
+
+		<p class="text-muted credit">Check out <a href="http://www.mysite.com">mysite.com</a>.</p>
+
+	</div>
+
+</div>
